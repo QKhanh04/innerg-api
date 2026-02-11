@@ -1,0 +1,6 @@
+@InnerG.Api_HostAddress = http://localhost:5251
+
+GET {{InnerG.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
