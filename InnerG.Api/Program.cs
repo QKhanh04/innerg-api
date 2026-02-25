@@ -51,6 +51,8 @@ var smtpPort = Require("SMTP_PORT");
 var smtpUser = Require("SMTP_USERNAME");
 var smtpPass = Require("SMTP_PASSWORD");
 var smtpFromName = Require("SMTP_FROM_NAME");
+var googleClientId = Require("GOOGLE_CLIENT_ID");
+var googleClientSecret = Require("GOOGLE_CLIENT_SECRET");
 
 // Frontend
 var frontendUrls =
@@ -119,6 +121,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
+    // options.User.RequireUniqueEmail = true;
+    // options.SignIn.RequireConfirmedEmail = true;
+
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
@@ -150,6 +155,8 @@ builder.Services.AddAuthentication(options =>
         RoleClaimType = ClaimTypes.Role
     };
 });
+
+
 
 builder.Services.AddAuthorization();
 

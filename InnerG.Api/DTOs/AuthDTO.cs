@@ -12,7 +12,7 @@ namespace InnerG.Api.DTOs
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string ConfirmPassword { get; set; } = string.Empty;
-        
+
     }
 
     public class LoginRequest
@@ -20,6 +20,12 @@ namespace InnerG.Api.DTOs
         public string EmailOrUsername { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
+
+    public class RegisterResponse
+    {
+        public bool RequiresEmailConfirmation { get; set; }
+    }
+
 
     public class AuthResponse
     {

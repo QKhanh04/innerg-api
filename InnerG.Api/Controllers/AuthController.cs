@@ -13,6 +13,7 @@ using InnerG.Api.Exceptions;
 using InnerG.Api.Exceptions.Helpers;
 using InnerG.Api.Services;
 using InnerG.Api.Services.Interfaces;
+using static InnerG.Api.DTOs.GoogleAuthDTO;
 
 namespace InnerG.Api.Controllers
 {
@@ -42,12 +43,28 @@ namespace InnerG.Api.Controllers
             });
         }
 
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLoginAsync([FromBody] GoogleLoginRequest request)
+        {
+            System.Console.WriteLine("Google ID Token: " + request.IdToken);
+            ValidationHelper.FromModelState(ModelState);
+            var result = await _authService.LoginWithGoogleAsync(request.IdToken);
+
+            SetRefreshTokenCookie(result.RefreshToken);
+
+            return Ok(new
+            {
+                token = result.Token,
+                userName = result.UserName,
+                email = result.Email
+            });
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
         {
             ValidationHelper.FromModelState(ModelState);
-            await _authService.RegisterAsync(request);
-            var result = new { Message = "User registered successfully" };
+            var result = await _authService.RegisterAsync(request);
             return StatusCode(StatusCodes.Status201Created, result);
         }
 
@@ -105,7 +122,7 @@ namespace InnerG.Api.Controllers
             await _authService.ConfirmEmailAsync(userId, token);
             return Ok(new { message = "Email verified successfully" });
         }
-        
+
         [HttpPost("resend-verification-email")]
         public async Task<IActionResult> ResendVerificationEmail([FromBody] string email)
         {

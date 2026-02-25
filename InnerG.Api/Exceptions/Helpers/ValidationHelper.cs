@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-
+using System.Text.Json;
 namespace InnerG.Api.Exceptions.Helpers
 {
     public static class ValidationHelper
@@ -17,7 +17,7 @@ namespace InnerG.Api.Exceptions.Helpers
             var errors = modelState
                 .Where(x => x.Value?.Errors.Count > 0)
                 .ToDictionary(
-                    x => x.Key.ToLowerInvariant(),
+                    x => JsonNamingPolicy.CamelCase.ConvertName(x.Key),
                     x => x.Value!.Errors
                         .Select(e => e.ErrorMessage)
                         .ToArray());

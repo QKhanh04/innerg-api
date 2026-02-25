@@ -26,7 +26,7 @@ namespace InnerG.Api.Exceptions.Handlers
 
         var problemDetails = new ProblemDetails
         {
-            Title = "Application error",
+            Title = appException.GetType().Name.Replace("Exception", string.Empty),
             Status = appException.StatusCode,
             Detail = appException.Message,
             Instance = httpContext.Request.Path
